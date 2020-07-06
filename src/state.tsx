@@ -7,7 +7,7 @@ export interface UserType {
 
 export interface AppStateContextType {
   user: UserType | null;
-  setUser: (user: UserType) => void;
+  setUser: (user: UserType | null) => void;
   isLoading: boolean;
   setIsLoading: (b: boolean) => void;
 }
