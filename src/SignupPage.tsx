@@ -1,16 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { handleRedirect } from './handlers'
 
 export default function SignupPage() {
   const history = useHistory();
-  const handleRedirectClick = (newLocation: string) => {
-    history.push(newLocation);
-  };
 
   return (
     <div>
       Signup Page
-      <button onClick={() => handleRedirectClick('/')}>Dashboard</button>
+      <button onClick={() => handleRedirect(history, '/')}>Dashboard</button>
     </div>
   );
 }

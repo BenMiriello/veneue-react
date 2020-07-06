@@ -1,5 +1,6 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
+import Handle from './handlers';
 
 export default function LoginPage (
   { handleSubmit }: {handleSubmit: (e: FormEvent<HTMLFormElement>) => void}
@@ -8,27 +9,15 @@ export default function LoginPage (
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }
-
-  const handleRedirectClick = (newLocation: string) => {
-    history.push(newLocation);
-  };
-
   return(
     <form onSubmit={handleSubmit} >
       <label> Email:
-        <input value={email} onChange={handleEmailChange}></input>
+        <input value={email} onChange={e => Handle.change(setEmail, e)}></input>
       </label>
       <label> Password:
-        <input value={password} onChange={handlePasswordChange}></input>
+        <input value={password} onChange={e => Handle.change(setPassword, e)}></input>
       </label>
-      <button onClick={() => handleRedirectClick('/')}>Dashboard</button>
+      <button onClick={_ => Handle.redirect(history, '/')}>Dashboard</button>
     </form>
   )
 }
