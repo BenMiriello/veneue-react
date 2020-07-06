@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useAppState } from './state'
 
-export default function LogoutHandler() {
+export default function Logout() {
   const history = useHistory();
   const { setUser } = useAppState();
 
@@ -11,7 +11,7 @@ export default function LogoutHandler() {
     Cookies.remove('session');
     setUser(null);
     history.push('/login');
-  }, [history]);
+  }, [history, setUser]);
 
   return <div>Logging out!</div>;
 };
