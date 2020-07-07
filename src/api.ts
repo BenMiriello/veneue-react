@@ -12,7 +12,7 @@ export const signup = async (params: SignupParams): Promise<SessionType> => {
       Accept: 'application/json',
     },
     // credentials: 'include',
-    body: JSON.stringify(params),
+    body: JSON.stringify({user: params}),
   });
   return await r.json();
 };
@@ -27,7 +27,7 @@ export const login = async (params: LoginParams): Promise<SessionType> => {
       Accept: 'application/json',
     },
     // credentials: 'include',
-    body: JSON.stringify(params),
+    body: JSON.stringify({user: params}),
   });
   return await r.json();
 };

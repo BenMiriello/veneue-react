@@ -15,7 +15,7 @@ export default function UserPage(): ReactElement {
       <h1>My Profile</h1>
       <div>Name: {user?.name}</div>
       <div>Email: {user?.email}</div>
-      <Link to="account/edit">Edit</Link>
+      <Link to="/account/edit">Edit</Link>
     </div>
   );
 }
