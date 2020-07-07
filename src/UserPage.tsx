@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import { useAppState } from './state';
 
 export default function UserPage(): ReactElement {

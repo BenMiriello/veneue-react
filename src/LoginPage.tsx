@@ -1,13 +1,12 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState, UserType } from './state';
+import { useAppState } from './state';
 import { login } from './Fetch';
-import { setSessionCookie } from './sessions';
 
 export default function LoginPage () {
   const history = useHistory();
-  const { setUser, isLoading, setIsLoading } = useAppState();
+  const { isLoading, setIsLoading, setSessionCookie } = useAppState();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -15,9 +14,7 @@ export default function LoginPage () {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const { jwt , user }: {jwt: string; user: UserType} = await login(email, password);
-    setSessionCookie(jwt);
-    setUser(user);
+    await login(email, password).then(setSessionCookie);
     setIsLoading(false);
     history.push('/')
   };

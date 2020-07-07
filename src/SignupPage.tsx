@@ -1,13 +1,12 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState, UserType } from './state';
+import { useAppState } from './state';
 import { signup } from './Fetch';
-import { setSessionCookie } from './sessions';
 
 export default function SignupPage() {
   const history = useHistory();
-  const { setUser, isLoading, setIsLoading } = useAppState();
+  const { isLoading, setIsLoading, setSessionCookie } = useAppState();
   
   const [email, setEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
@@ -16,9 +15,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const { jwt, user }: {jwt: string; user: UserType} = await signup(email, username, password);
-    setSessionCookie(jwt);
-    setUser(user);
+    signup(email, username, password).then(setSessionCookie);
     setIsLoading(false);
     history.push('/')
   };
