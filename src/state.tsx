@@ -34,14 +34,12 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     _setUser(user);
   };
 
-  const logout = () => { setSessionCookie(null) };
+  const logout = () => { setUser(null); setSessionCookie(null) };
 
   useEffect(() => {
     if (!user) {
       const sessionCookie = getSessionCookie();
-      if (sessionCookie) {
-        setUser(sessionCookie);
-      }
+      if (sessionCookie) setUser(sessionCookie);
     }
   }, [user]);
 

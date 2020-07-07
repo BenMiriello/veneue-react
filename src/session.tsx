@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 import { UserType } from './state';
@@ -16,22 +15,8 @@ export const getSessionCookie = (): UserType | null => {
   return null;
 };
 
-// export default function useUser() {
-//   const [session, setSession] = useState<UserType | null>(null);
-  
-//   useEffect(() => {
-//     const sessionCookie = getSessionCookie();
-//     if (!user && sessionCookie) {
-//       setSession(getSessionCookie());
-//     }
-//   }, []);
-
-//   const user = session;
-
-//   const setUser = (user: UserType | null) => {
-//     setSessionCookie(user);
-//     setSession(user);
-//   };
-
-//   return [user, setUser];
-// };
+export const getJWT = (): string | null => {
+  const jwtCookie = Cookies.get('jwt');
+  if (jwtCookie) return JSON.parse(jwtCookie);
+  return null;
+};

@@ -1,17 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { useAppState } from './state';
 
 export default function Nav() {
-  const { user } = useAppState();
+  const history = useHistory();
+  const { user, logout } = useAppState();
+
+  const handleLogout = () => { logout(); history.push('/') };
 
   const loggedIn = (
     <>
       <li className="Nav-item">
-        <Link className="Nav-link" to="/logout">
-          Logout
-        </Link>
+        <form onSubmit={handleLogout}>
+          <button type="submit" className="Nav-link" >
+            Logout
+          </button>
+        </form>
       </li>
       <li className="Nav-item">
         <Link className="Nav-link" to="/account">
