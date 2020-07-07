@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
-import { getSessionCookie, setSessionCookie } from './session';
+import { getSession, setSession, removeSession } from './session';
 
 export interface UserType {
   name: string;
@@ -30,16 +30,18 @@ export default function AppStateProvider(props: { children: ReactNode }) {
   }
 
   const setUser = (user: UserType | null) => {
-    setSessionCookie(user);
-    _setUser(user);
+    if (setSession(user)) _setUser(user);
   };
 
-  const logout = () => { setUser(null); setSessionCookie(null) };
+  const logout = () => {
+    if (removeSession()) setUser(null);
+    else handleSetError(new Error('Unable to log out. Please try again.'))
+  };
 
   useEffect(() => {
     if (!user) {
-      const sessionCookie = getSessionCookie();
-      if (sessionCookie) setUser(sessionCookie);
+      const session = getSession();
+      if (session) setUser(session);
     }
   }, [user]);
 

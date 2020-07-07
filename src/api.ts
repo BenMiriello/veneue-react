@@ -32,9 +32,3 @@ export const login = async (params: LoginParams): Promise<UserType> => {
   });
   return await r.json();
 };
-
-export const getJWT = (): string | null => {
-  const sessionCookie = Cookies.get('session');
-  if (sessionCookie) return JSON.parse(sessionCookie).jwt;
-  return null;
-};
