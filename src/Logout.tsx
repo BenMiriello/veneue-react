@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { useAppState } from './state';
 
 export default function Logout() {
   const history = useHistory();
+  const { logout } = useAppState();
 
   useEffect(() => {
-    Cookies.remove('session');
+    logout();
     history.push('/login');
-  }, [history]);
+  }, []);
 
   return <div>Logging out</div>;
 };

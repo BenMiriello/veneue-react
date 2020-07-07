@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAppState } from './state';
@@ -6,42 +6,36 @@ import { useAppState } from './state';
 export default function Nav() {
   const { user } = useAppState();
 
-  const [userOptions, setUserOptions] = useState<ReactNode>(<></>)
+  const loggedIn = (
+    <>
+      <li className="Nav-item">
+        <Link className="Nav-link" to="/logout">
+          Logout
+        </Link>
+      </li>
+      <li className="Nav-item">
+        <Link className="Nav-link" to="/account">
+          {user?.name}
+        </Link>
+      </li>
+    </>
+  );
 
-  useEffect(() => {
-    if (!user) {
-      setUserOptions(
-        <>
-          <li>
-            <Link className="Nav-link" to="/login">
-              Login
-            </Link>
-          </li>
-          or
-          <li className="Nav-item">
-            <Link className="Nav-link" to="/signup">
-              Signup
-            </Link>
-          </li>
-        </>
-      );
-    } else {
-      setUserOptions(
-        <>
-          <li className="Nav-item">
-            <Link className="Nav-link" to="/logout">
-              Logout
-            </Link>
-          </li>
-          <li className="Nav-item">
-            <Link className="Nav-link" to="/account">
-              {user!.name}
-            </Link>
-          </li>
-        </>
-      );
-    }
-  }, [user]);
+  const notLoggedIn = (
+    <>
+      <li>
+        <Link className="Nav-link" to="/login">
+          Login
+        </Link>
+      </li>
+      or
+      <li className="Nav-item">
+        <Link className="Nav-link" to="/signup">
+          Signup
+        </Link>
+      </li>
+    </>
+  );
   
   return (
     <nav className="Nav">
@@ -60,7 +54,7 @@ export default function Nav() {
         </div>
         <div className="Nav-right">
           <ul className="Nav-item-wrapper">
-          {userOptions}
+          {user ? loggedIn : notLoggedIn}
           </ul>
         </div>
       </div>

@@ -1,13 +1,13 @@
 import Cookies from 'js-cookie';
 
-import { UserType, SessionCookieType } from './state';
+import { UserType } from './state';
 
-export const setSessionCookie = (session: SessionCookieType): void => {
+export const setSessionCookie = (session: UserType): void => {
   Cookies.remove('session');
   Cookies.set('session', session, { expires: 14 });
 };
 
-export const getSessionCookie = (): SessionCookieType | null => {
+export const getSessionCookie = (): UserType | null => {
   const sessionCookie = Cookies.get('session');
   if (sessionCookie) return JSON.parse(sessionCookie);
   return null;

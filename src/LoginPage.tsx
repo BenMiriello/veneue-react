@@ -6,7 +6,7 @@ import { login } from './api';
 
 export default function LoginPage () {
   const history = useHistory();
-  const { setSessionCookie } = useAppState();
+  const { setUser, handleSetError } = useAppState();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -15,7 +15,7 @@ export default function LoginPage () {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    await login({email, password}).then(setSessionCookie).catch((err) => console.log(err));
+    await login({email, password}).then(setUser).catch(handleSetError);
     setLoading(false);
     history.push('/')
   };
