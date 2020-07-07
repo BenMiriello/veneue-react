@@ -18,9 +18,3 @@ export const sessionUser = (): UserType | null => {
   if (sessionCookie) return JSON.parse(sessionCookie).user;
   return null;
 };
-
-export const sessionJWT = (): string | null => {
-  const sessionCookie = Cookies.get('session');
-  if (sessionCookie) return JSON.parse(sessionCookie).jwt;
-  return null;
-};

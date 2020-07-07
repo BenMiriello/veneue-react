@@ -19,7 +19,7 @@ export default function App() {
           <Route path="/signup" component={SignupPage} exact />
           <Route path="/login" component={LoginPage} exact />
           <Route path="/account" component={UserPage} exact />
-          <Route path="account/edit" component={EditAccount} exact />
+          <Route path="/account/edit" component={EditAccount} exact />
         </Switch>
       </BrowserRouter>
     </AppStateProvider>

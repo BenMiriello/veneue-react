@@ -1,17 +1,22 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
-import { getSession, setSession, removeSession } from './session';
+import { setSessionCookie, getSessionCookie, removeSessionCookie } from './session';
 
 export interface UserType {
   name: string;
   email: string;
 };
 
+export interface SessionType {
+  jwt: string;
+  user: UserType;
+}
+
 export interface AppStateContextType {
   isLoading: boolean;
   setIsLoading: (b: boolean) => void;
   user: UserType | null;
-  setUser: (u: UserType | null) => void;
+  setSession: (u: SessionType | null) => void;
   logout: () => void;
   error: Error | null;
   handleSetError: (e: Error | null) => void;
@@ -21,35 +26,35 @@ export const AppStateContext = createContext<AppStateContextType>(null!);
 
 export default function AppStateProvider(props: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, _setUser] = useState<UserType | null>(null);
+  const [session, _setSession] = useState<SessionType | null>(null);
   const [error, setError] = useState<Error | null>(null);
+
+  const setSession = (res: SessionType | null) => {
+    if (setSessionCookie(res)) _setSession(res);
+  };
+
+  const logout = () => {
+    if (removeSessionCookie()) _setSession(null);
+    else handleSetError(new Error('Unable to log out. Please try again.'))
+  };
+
+  useEffect(() => {
+    if (!session) {
+      const sessionCookie = getSessionCookie();
+      if (sessionCookie) setSession(sessionCookie);
+    }
+  }, [session]);
 
   const handleSetError = (error: Error | null) => {
     console.log(error);
     setError(error);
   }
 
-  const setUser = (user: UserType | null) => {
-    if (setSession(user)) _setUser(user);
-  };
-
-  const logout = () => {
-    if (removeSession()) setUser(null);
-    else handleSetError(new Error('Unable to log out. Please try again.'))
-  };
-
-  useEffect(() => {
-    if (!user) {
-      const session = getSession();
-      if (session) setUser(session);
-    }
-  }, [user]);
-
   const contextValue: AppStateContextType = {
     isLoading,
     setIsLoading,
-    user,
-    setUser,
+    user: session?.user || null,
+    setSession,
     logout,
     error,
     handleSetError,

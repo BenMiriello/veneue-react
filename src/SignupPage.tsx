@@ -6,7 +6,7 @@ import { signup } from './api';
 
 export default function SignupPage() {
   const history = useHistory();
-  const { setUser, handleSetError} = useAppState();
+  const { setSession, handleSetError } = useAppState();
   
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -16,7 +16,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    signup({email, name, password}).then(setUser).catch(handleSetError);
+    signup({email, name, password}).then(setSession).catch(handleSetError);
     setLoading(false);
     history.push('/')
   };

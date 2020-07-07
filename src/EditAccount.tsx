@@ -1,7 +1,7 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useAppState } from './state';
-import { useHistory } from 'react-router-dom';
 
 export default function EditAccount() {
   const { user } = useAppState();
@@ -11,7 +11,8 @@ export default function EditAccount() {
 
   return (
     <div>
-      <div>Email <input>{user!.email}</input></div>
+      <h1>Edit User Page</h1>
+      <div>Email <input>{user?.name}</input></div>
       <div>Old Password <input></input></div>
       <div>New Password <input></input></div>
     </div>
