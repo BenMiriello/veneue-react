@@ -2,24 +2,25 @@ import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useAppState } from './state';
-import { login } from './Fetch';
+import { login } from './api';
 
 export default function LoginPage () {
   const history = useHistory();
-  const { isLoading, setIsLoading, setSessionCookie } = useAppState();
+  const { setSessionCookie } = useAppState();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    await login(email, password).then(setSessionCookie);
-    setIsLoading(false);
+    setLoading(true);
+    await login({email, password}).then(setSessionCookie).catch((err) => console.log(err));
+    setLoading(false);
     history.push('/')
   };
 
-  if (isLoading) return(
+  if (loading) return(
     <div>Logging In</div>
   );
 

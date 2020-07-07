@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useAppState } from './state';
 
 export default function UserPage(): ReactElement {
@@ -12,9 +12,10 @@ export default function UserPage(): ReactElement {
 
   return (
     <div>
-      <h1>User Page</h1>
+      <h1>My Profile</h1>
       <div>Name: {user?.name}</div>
       <div>Email: {user?.email}</div>
+      <Link to="account/edit">Edit</Link>
     </div>
   );
 }

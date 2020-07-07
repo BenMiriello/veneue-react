@@ -5,18 +5,18 @@ import { getSessionCookie, setSessionCookie, sessionUser, sessionJWT } from './s
 export interface UserType {
   name: string;
   email: string;
-}
+};
 
-export interface UserSessionType {
+export interface SessionCookieType {
   jwt: string;
   user: UserType;
-}
+};
 
 export interface AppStateContextType {
   isLoading: boolean;
   setIsLoading: (b: boolean) => void;
-  setSessionCookie: (session: UserSessionType) => void;
-  getSessionCookie: () => UserSessionType | null;
+  setSessionCookie: (session: SessionCookieType) => void;
+  getSessionCookie: () => SessionCookieType | null;
   user: UserType | null;
   sessionToken: string | null;
 }
@@ -34,6 +34,7 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     user: sessionUser(),
     sessionToken: sessionJWT(),
   };
+  
   return <AppStateContext.Provider value={contextValue}>{props.children}</AppStateContext.Provider>;
 }
 

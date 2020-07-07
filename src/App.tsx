@@ -8,6 +8,7 @@ import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 import Logout from './Logout';
 import UserPage from './UserPage';
+import EditAccount from './EditAccount';
 
 export default function App() {
   return (
@@ -19,7 +20,8 @@ export default function App() {
           <Route path="/signup" component={SignupPage} exact />
           <Route path="/login" component={LoginPage} exact />
           <Route path="/logout" component={Logout} exact />
-          <Route path="/me" component={UserPage} exact />
+          <Route path="/account" component={UserPage} exact />
+          <Route path="account/edit" component={EditAccount} exact />
         </Switch>
       </BrowserRouter>
     </AppStateProvider>

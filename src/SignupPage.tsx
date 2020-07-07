@@ -2,25 +2,26 @@ import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useAppState } from './state';
-import { signup } from './Fetch';
+import { signup } from './api';
 
 export default function SignupPage() {
   const history = useHistory();
-  const { isLoading, setIsLoading, setSessionCookie } = useAppState();
+  const { setSessionCookie } = useAppState();
   
   const [email, setEmail] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    signup(email, username, password).then(setSessionCookie);
-    setIsLoading(false);
+    setLoading(true);
+    signup({email, name, password}).then(setSessionCookie).catch((err) => console.log(err));
+    setLoading(false);
     history.push('/')
   };
 
-  if (isLoading) return(
+  if (loading) return(
     <div>Creating Your Account</div>
   )
 
@@ -32,7 +33,7 @@ export default function SignupPage() {
           <input value={email} onChange={e => setEmail(e.target.value)}></input>
         </label>
         <label> Username:
-          <input value={username} onChange={e => setUsername(e.target.value)}></input>
+          <input value={name} onChange={e => setName(e.target.value)}></input>
         </label>
         <label> Password:
           <input value={password} onChange={e => setPassword(e.target.value)}></input>

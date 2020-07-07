@@ -34,7 +34,7 @@ export default function Nav() {
             </Link>
           </li>
           <li className="Nav-item">
-            <Link className="Nav-link" to="/me">
+            <Link className="Nav-link" to="/account">
               {user!.name}
             </Link>
           </li>
