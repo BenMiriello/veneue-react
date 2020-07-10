@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-import { UserType } from './state';
+import { UserType } from './appState';
 
 export const setSessionCookie = (session: UserType): void => {
   Cookies.remove('session');

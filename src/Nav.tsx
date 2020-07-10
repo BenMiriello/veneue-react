@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState } from './state';
+import { useAppState } from './appState';
 
 export default function Nav() {
   const history = useHistory();
-  const { user, logout } = useAppState();
+
+  const { user, checkLoggedIn, logout } = useAppState();
+
+  useEffect(() => checkLoggedIn(), []);
 
   const handleLogout = () => { logout(); history.push('/') };
 
@@ -54,6 +57,11 @@ export default function Nav() {
             <li>
               <Link className="Nav-link" to="/">
                 Home
+              </Link>
+            </li>
+            <li>
+              <Link className="Nav-link" to="/dashboard">
+                Dashboard
               </Link>
             </li>
           </ul>

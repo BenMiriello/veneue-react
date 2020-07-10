@@ -1,22 +1,18 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState } from './state';
-import { login } from './api';
+import { useAppState } from './appState';
 
 export default function LoginPage () {
   const history = useHistory();
-  const { setSession, handleSetError } = useAppState();
+  const { login, loading } = useAppState();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    await login({email, password}).then(setSession).catch(handleSetError);
-    setLoading(false);
+    login({email, password});
     history.push('/')
   };
 

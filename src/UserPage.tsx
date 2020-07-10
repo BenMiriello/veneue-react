@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { useAppState } from './state';
+import { useAppState } from './appState';
 
 export default function UserPage(): ReactElement {
   const history = useHistory();
