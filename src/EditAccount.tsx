@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useAppState } from './appState';
 
 export default function EditAccount() {
-  const { user, checkLoggedIn, editAccount, deleteAccount, updatePassword, loading } = useAppState();
+  const { user, checkLoggedIn, updateAccount, deleteAccount, updatePassword, loading } = useAppState();
   const history = useHistory();
 
   const [email, setEmail] = useState<string>(user?.email || '');
@@ -26,23 +26,23 @@ export default function EditAccount() {
     setPassword('');
   }
 
-  const handleEditAccount = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    editAccount({ email, password, name });
+    await updateAccount({ email, password, name });
     resetFields();
     history.push('/account');
   };
 
   const handleUpdatePassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updatePassword({old_password: oldPassword, new_password: newPassword});
+    await updatePassword({old_password: oldPassword, new_password: newPassword});
     resetFields();
     history.push('/account');
   };
 
   const handleDeleteAccount = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    deleteAccount();
+    await deleteAccount();
     resetFields();
     history.push('/');
   };
@@ -54,7 +54,7 @@ export default function EditAccount() {
   return (
     <div>
       <h1>Edit My Account</h1>
-      <form onSubmit={handleEditAccount}>
+      <form onSubmit={handleUpdateAccount}>
         <label>Name</label>
         <input
           onChange={(e) => setName(e.target.value)}

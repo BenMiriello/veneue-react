@@ -4,7 +4,7 @@ import {
   fetchSignup,
   fetchLogin,
   fetchCheckLoggedIn,
-  fetchEditAccount,
+  fetchUpdateAccount,
   fetchLogout,
   fetchUpdatePassword,
   fetchDeleteAccount,
@@ -13,10 +13,7 @@ import {
   UpdatePasswordData,
 } from './api';
 
-export interface UserType {
-  name: string;
-  email: string;
-}
+export interface UserType { name: string; email: string; };
 
 export interface AppStateContextType {
   loading: boolean;
@@ -27,12 +24,12 @@ export interface AppStateContextType {
   login: (data: LoginData) => void;
   checkLoggedIn: () => void;
   logout: () => void;
-  editAccount: (data: AccountData) => void;
+  updateAccount: (data: AccountData) => void;
   updatePassword: (data: UpdatePasswordData) => void;
   deleteAccount: () => void;
   error: Error | null;
   setError: Dispatch<SetStateAction<Error | null>>;
-}
+};
 
 export const AppStateContext = createContext<AppStateContextType>(null!);
 
@@ -41,72 +38,17 @@ export default function AppStateProvider(props: { children: ReactNode }) {
   const [user, setUser] = useState<UserType | null>(null);
   const [error, _setError] = useState<Error | null>(null);
 
-  const setError = (e: SetStateAction<Error | null>): void => {
-    console.log(e); _setError(e);
+  const setError = (error: any) => {
+    console.log(error);
+    _setError(error);
   };
 
-  const signup = async (data: AccountData) => {
+  const handleFetch = async (f: Promise<Response>) => {
     setLoading(true);
-    await fetchSignup(data)
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        if (r.logged_in) setUser(r.user);
-        else setUser(null);
-      })
-      .catch(setError);
-    setLoading(false);
-  };
-
-  const login = async (data: LoginData) => {
-    setLoading(true);
-    await fetchLogin(data)
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        if (r.logged_in) setUser(r.user);
-        else setUser(null);
-      })
-      .catch(setError);
-    setLoading(false);
-  };
-
-  const checkLoggedIn = async () => {
-    setLoading(true);
-    await fetchCheckLoggedIn()
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        if (r.logged_in) setUser(r.user);
-        else setUser(null);
-      })
-      .catch(err => {console.log(err); setError(err)});
-    setLoading(false);
-  };
-
-  const editAccount = async (data: AccountData) => {
-    setLoading(true);
-    await fetchEditAccount(data)
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        if (r.logged_in) setUser(r.user);
-        else setUser(null);
-      })
-      .catch(err => {console.log(err); setError(err)});
-    setLoading(false);
-  };
-
-  const updatePassword = async (data: UpdatePasswordData) => {
-    setLoading(true);
-    await fetchUpdatePassword(data)
-      .then((r) => r.json())
-      .then((r) => {
-        console.log(r);
-        if (r.logged_in) setUser(r.user);
-        else setUser(null);
-      })
-      .catch(err => {console.log(err); setError(err)});
+    f.then(r => r.json()).then(r => { console.log(r);
+      setUser(r.user || null);
+      if (r.errors) setError(r.errors);
+    }).catch(setError);
     setLoading(false);
   };
 
@@ -115,18 +57,18 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading,
     user,
     setUser,
-    signup,
-    login,
-    checkLoggedIn,
+    signup: (data: AccountData) => handleFetch(fetchSignup(data)),
+    login: (data: LoginData) => handleFetch(fetchLogin(data)),
+    checkLoggedIn: () => handleFetch(fetchCheckLoggedIn()),
     logout: () => { fetchLogout(); setUser(null) },
-    editAccount,
-    updatePassword,
+    updateAccount: (data: AccountData) => handleFetch(fetchUpdateAccount(data)),
+    updatePassword: (data: UpdatePasswordData) => handleFetch(fetchUpdatePassword(data)),
     deleteAccount: () => { fetchDeleteAccount(); setUser(null) },
     error,
     setError,
   };
 
   return <AppStateContext.Provider value={contextValue}>{props.children}</AppStateContext.Provider>;
-}
+};
 
 export const useAppState = () => useContext(AppStateContext)

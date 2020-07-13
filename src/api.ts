@@ -5,7 +5,7 @@ export interface LoginData { email: string; password: string; };
 export interface UpdatePasswordData { old_password: string; new_password: string; };
 
 export const fetchSignup = ( data: AccountData ) => (
-  fetch(apiRoot + '/registrations', {
+  fetch(apiRoot + '/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -30,9 +30,9 @@ export const fetchCheckLoggedIn = () => (
   })
 );
 
-export const fetchEditAccount = ( data: AccountData ) => (
-  fetch(apiRoot + '/edit_account', {
-    method: 'POST',
+export const fetchUpdateAccount = ( data: AccountData ) => (
+  fetch(apiRoot + '/update_account', {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({ user: data }),
