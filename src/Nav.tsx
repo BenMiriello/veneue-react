@@ -6,10 +6,9 @@ import { useAppState } from './appState';
 
 export default function Nav() {
   const history = useHistory();
-
   const { user, checkLoggedIn, logout } = useAppState();
 
-  useEffect(() => checkLoggedIn(), []);
+  useEffect(() => { checkLoggedIn() }, []);
 
   const handleLogout = () => { logout(); history.push('/') };
 

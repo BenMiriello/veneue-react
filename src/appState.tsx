@@ -42,15 +42,18 @@ export default function AppStateProvider(props: { children: ReactNode }) {
   const [error, _setError] = useState<Error | null>(null);
 
   const setError = (e: SetStateAction<Error | null>): void => {
-    console.log(e);
-    _setError(e);
+    console.log(e); _setError(e);
   };
 
   const signup = async (data: AccountData) => {
     setLoading(true);
     await fetchSignup(data)
       .then((r) => r.json())
-      .then((r) => setUser(r.user))
+      .then((r) => {
+        console.log(r);
+        if (r.logged_in) setUser(r.user);
+        else setUser(null);
+      })
       .catch(setError);
     setLoading(false);
   };
@@ -59,7 +62,11 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading(true);
     await fetchLogin(data)
       .then((r) => r.json())
-      .then((r) => setUser(r.user))
+      .then((r) => {
+        console.log(r);
+        if (r.logged_in) setUser(r.user);
+        else setUser(null);
+      })
       .catch(setError);
     setLoading(false);
   };
@@ -69,10 +76,11 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     await fetchCheckLoggedIn()
       .then((r) => r.json())
       .then((r) => {
+        console.log(r);
         if (r.logged_in) setUser(r.user);
         else setUser(null);
       })
-      .catch(setError);
+      .catch(err => {console.log(err); setError(err)});
     setLoading(false);
   };
 
@@ -80,28 +88,26 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading(true);
     await fetchEditAccount(data)
       .then((r) => r.json())
-      .then((r) => setUser(r.user))
-      .catch(setError);
+      .then((r) => {
+        console.log(r);
+        if (r.logged_in) setUser(r.user);
+        else setUser(null);
+      })
+      .catch(err => {console.log(err); setError(err)});
     setLoading(false);
   };
 
   const updatePassword = async (data: UpdatePasswordData) => {
     setLoading(true);
     await fetchUpdatePassword(data)
-      .then(r => r.json())
-      .then(r => setUser(r.user))
-      .catch(setError);
+      .then((r) => r.json())
+      .then((r) => {
+        console.log(r);
+        if (r.logged_in) setUser(r.user);
+        else setUser(null);
+      })
+      .catch(err => {console.log(err); setError(err)});
     setLoading(false);
-  }
-
-  const logout = () => {
-    fetchLogout();
-    setUser(null);
-  };
-
-  const deleteAccount = () => {
-    fetchDeleteAccount();
-    setUser(null);
   };
 
   const contextValue: AppStateContextType = {
@@ -112,10 +118,10 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     signup,
     login,
     checkLoggedIn,
-    logout,
+    logout: () => { fetchLogout(); setUser(null) },
     editAccount,
     updatePassword,
-    deleteAccount,
+    deleteAccount: () => { fetchDeleteAccount(); setUser(null) },
     error,
     setError,
   };
@@ -123,4 +129,4 @@ export default function AppStateProvider(props: { children: ReactNode }) {
   return <AppStateContext.Provider value={contextValue}>{props.children}</AppStateContext.Provider>;
 }
 
-export const useAppState = () => useContext(AppStateContext);
+export const useAppState = () => useContext(AppStateContext)

@@ -1,11 +1,11 @@
-const apiRoot = 'localhost:3001';
+const apiRoot = 'http://api.localhost:3001/v1';
 
 export interface AccountData { email: string; name: string; password: string; };
 export interface LoginData { email: string; password: string; };
 export interface UpdatePasswordData { old_password: string; new_password: string; };
 
 export const fetchSignup = ( data: AccountData ) => (
-  fetch(`http://www.${apiRoot}/registrations`, {
+  fetch(apiRoot + '/registrations', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -14,7 +14,7 @@ export const fetchSignup = ( data: AccountData ) => (
 );
 
 export const fetchLogin = ( data: LoginData ) => (
-  fetch(`http://${apiRoot}/sessions`, {
+  fetch(apiRoot + '/sessions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -23,7 +23,7 @@ export const fetchLogin = ( data: LoginData ) => (
 );
 
 export const fetchCheckLoggedIn = () => (
-  fetch(`http://${apiRoot}/logged_in`, {
+  fetch(apiRoot + '/logged_in', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -31,7 +31,7 @@ export const fetchCheckLoggedIn = () => (
 );
 
 export const fetchEditAccount = ( data: AccountData ) => (
-  fetch(`http://${apiRoot}/edit_account`, {
+  fetch(apiRoot + '/edit_account', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -40,7 +40,7 @@ export const fetchEditAccount = ( data: AccountData ) => (
 );
 
 export const fetchLogout = () => {
-  fetch(`http://${apiRoot}/logout`, {
+  fetch(apiRoot + '/logout', {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -48,18 +48,18 @@ export const fetchLogout = () => {
 };
 
 export const fetchDeleteAccount = () => {
-  fetch(`http://${apiRoot}/delete_account`, {
+  fetch(apiRoot + '/delete_account', {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   })
-}
+};
 
 export const fetchUpdatePassword = (data: UpdatePasswordData) => (
-  fetch(`http://${apiRoot}/update_password`, {
+  fetch(apiRoot + '/update_password', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({user: data})
   })
-);
+)
