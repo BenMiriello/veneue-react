@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAppState } from './appState';
+import { useAppState } from '../../state';
 
 export default function DeleteAccount() {
   const history = useHistory();

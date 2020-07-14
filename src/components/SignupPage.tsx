@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState } from './appState';
+import { useAppState } from '../state';
 
 export default function SignupPage() {
   const history = useHistory();

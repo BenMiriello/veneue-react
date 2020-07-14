@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState } from './appState';
+import { useAppState } from '../../state';
 
 export default function ChangeName() {
   const history = useHistory();
-  const { changeName, loading } = useAppState();
+  const { user, changeName, loading, setError } = useAppState();
 
   const [newName, setNewName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [matchError, setMatchError] = useState<boolean>(false);
 
   const handleChangeName = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    changeName({ new_name: newName, password });
-    setPassword('');
-    setNewName('');
-    history.push('/account');
+    if (user?.name !== newName) {
+      changeName({ new_name: newName, password });
+      setPassword('');
+      setNewName('');
+      history.push('/account');
+    } else {
+      setError(new Error("The new name you entered is the same as your existing name."));
+    }
   };
+
+  useEffect(() => {
+    if (newName.length && newName === user?.name ) {
+        setMatchError(true);
+    } else setMatchError(false);
+  }, [newName, user]);
 
   if (loading) return <div>Changing Your Name</div>;
 
@@ -39,6 +50,7 @@ export default function ChangeName() {
           name="password"
           value={password}
         ></input>
+        { matchError ? <p>Your new name is the same as your existing name.</p> : <p></p>}
         <input type="submit" value="Submit"></input>
       </form>
     </>

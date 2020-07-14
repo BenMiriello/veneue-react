@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useAppState } from './appState';
+import { useAppState } from '../../state';
 import ChangeName from './ChangeName';
 import ChangePassword from './ChangePassword';
 import ChangeEmail from './ChangeEmail';

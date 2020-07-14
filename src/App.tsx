@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import AppStateProvider from './appState';
-import Nav from './Nav';
-import HomePage from './HomePage';
-import SignupPage from './SignupPage';
-import LoginPage from './LoginPage';
-import UserPage from './UserPage';
-import EditAccount from './EditAccount';
-import Dashboard from './Dashboard';
+import AppStateProvider from './state';
+import Nav from './components/Nav';
+import HomePage from './components/HomePage';
+import SignupPage from './components/SignupPage';
+import LoginPage from './components/LoginPage';
+import UserPage from './components/UserPage';
+import EditAccount from './components/EditAccount';
+import Dashboard from './components/Dashboard';
 
 export default function App() {
 
