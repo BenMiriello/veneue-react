@@ -6,18 +6,17 @@ declare module '@material-ui/core/styles/createMuiTheme' {
     sidebarMobileHeight: number;
   }
 
-  // allow configuration using `createMuiTheme`
   interface ThemeOptions {
     sidebarWidth?: number;
     sidebarMobileHeight?: number;
   }
-}
+};
 
 export default createMuiTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     primary: {
-      main: '#F22F46',
+      main: '#5000ff',
     },
   },
   sidebarWidth: 260,

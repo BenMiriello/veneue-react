@@ -3,12 +3,14 @@ import { useHistory } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Button, TextField } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 
 import { useAppState } from '../state';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {flexGrow: 1},
+    title: {flexGrow: 1},
     container: {
       backgroundColor: theme.palette.background.default,
     },
@@ -66,67 +68,54 @@ export default function Nav() {
 
   const loggedIn = (
     <>
-      <li className="Nav-item">
-        <form onSubmit={handleLogout}>
-          <button type="submit" className={"Nav-link"} >
-            Logout
-          </button>
-        </form>
-      </li>
-      <li className="Nav-item">
-        <Link className={"Nav-link"} to="/account">
+      <Button className={classes.button} variant="contained" color="primary" onClick={handleLogout}>
+        Logout
+      </Button>
+      <Link className={"Nav-link"} to="/account">
+        <Typography className={classes.title} variant="h6" >
           {user?.name}
-        </Link>
-      </li>
+        </Typography>
+      </Link>
     </>
   );
 
   const notLoggedIn = (
     <>
-      <li>
-        <Link className="Nav-link" to="/login">
-          <Button className={classes.button} variant="contained" color="primary">
-            Login
-          </Button>
-        </Link>
-      </li>
-      or
-      <li className="Nav-item">
-        <Link className="Nav-link" to="/signup">
-          <Button className={classes.button} variant="contained" color="primary">
-            Signup
-          </Button>
-        </Link>
-      </li>
+      <Link className="Nav-link" to="/login">
+        <Button className={classes.button} variant="contained" color="primary">
+          Sign In
+        </Button>
+      </Link>
+      <Link className="Nav-link" to="/signup">
+        <Button className={classes.button} variant="contained" color="primary">
+          Signup
+        </Button>
+      </Link>
     </>
   );
-  
+
   return (
-    <nav className="Nav">
-      <div className="Nav-container">
-        <Link to="/" className="Nav-brand">
-          <img src="logo.svg" className="Nav-logo" alt="blank" />
-        </Link>
-        <div className="Nav-left">
-          <ul>
-            <li>
-              <Link className="Nav-link" to="/">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link className="Nav-link" to="/dashboard">
-                Dashboard
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="Nav-right">
-          <ul className="Nav-item-wrapper">
-          {user ? loggedIn : notLoggedIn}
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <div className={classes.root} >
+      <AppBar className={classes.container} position="static" >
+        <Toolbar className={classes.toolbar}>
+          <Link to="/" className="Nav-brand">
+            <img src="logo.svg" color="inherit" className="Nav-logo" alt="blank" />
+          </Link>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/">
+              Home
+            </Link>
+          </Typography>
+          <Typography variant="h6" className={classes.title}>
+            <Link className="Nav-link" to="/dashboard">
+              Dashboard
+            </Link>
+          </Typography>
+          <div className={classes.rightButtonContainer}>
+            {user ? loggedIn : notLoggedIn}
+          </div>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }

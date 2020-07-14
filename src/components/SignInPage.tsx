@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
-import { useHistory } from 'react-router-dom';
 
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, TextField, Button, Typography } from '@material-ui/core';
 
@@ -19,54 +19,35 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SignupPage() {
+export default function SignInPage() {
   const classes = useStyles();
   const history = useHistory();
-  const { signup, loading } = useAppState();
+  const { login, loading } = useAppState();
 
   const [email, setEmail] = useState<string>('');
-  const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup({ email, name, password });
+    login({ email, password });
     history.push('/');
   };
 
-  if (loading) return <div>Creating Your Account</div>;
+  if (loading) return <div>Signing In</div>;
 
   return (
     <form onSubmit={handleSubmit}>
       <Grid container alignItems="center" direction="column">
         <Typography variant="h5" align="center" className={classes.title}>
-          Sign Up
+          Sign In
         </Typography>
-        <TextField
-          type="email"
-          placeholder="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></TextField>
-        <TextField 
-          placeholder="name"
-          name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></TextField>
-        <TextField
-          type="password"
-          placeholder="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></TextField>
+        <TextField label="email" value={email} onChange={e => setEmail(e.target.value)} />
+        <TextField label="password" value={password} onChange={e => setPassword(e.target.value)} />
         <Button
           variant="contained"
           className={classes.submit}
           type="submit"
-          disabled={!password.length || !email.length || !name.length}
+          disabled={!password.length || !email.length}
         >
           Submit
         </Button>
