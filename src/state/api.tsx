@@ -1,3 +1,4 @@
+import { useAppState } from './index';
 import { apiRoot } from '../constants';
 
 export interface Login { email: string; password: string; };
@@ -8,7 +9,7 @@ export interface ChangePassword { old_password: string; new_password: string; };
 
 export type FetchBody = Account | Login | ChangeEmail | ChangeName | ChangePassword;
 
-export const fetchAPI = (endpoint?: string, method: string = 'GET', data?: FetchBody) => (
+export const toApi = (endpoint?: string, method: string = 'GET', data?: FetchBody) => (
   fetch(apiRoot + endpoint, {
     method: method,
     headers: { 'Content-Type': 'application/json' },
@@ -17,15 +18,8 @@ export const fetchAPI = (endpoint?: string, method: string = 'GET', data?: Fetch
   })
 );
 
-const api = {
-  signup: (data: Account) => fetchAPI('/users', 'POST', data),
-  login: (data: Login) => fetchAPI('/sessions', 'POST', data),
-  checkLoggedIn: () => fetchAPI('/logged_in', 'GET'),
-  logout: () => fetchAPI('/logout', 'DELETE'),
-  changeName: (data: ChangeName) => fetchAPI('/change_name', 'PATCH', data),
-  changeEmail: (data: ChangeEmail) => fetchAPI('/change_email', 'PATCH', data),
-  changePassword: (data: ChangePassword) => fetchAPI('/change_password', 'PATCH', data),
-  deleteAccount: () => fetchAPI('/delete_account', 'DELETE'),
-};
+const useApi = () => {
+  const { s}
+}
 
-export default api;
+export const useApi;
