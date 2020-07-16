@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
@@ -14,7 +14,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 
 export default createMuiTheme({
   palette: {
-    type: 'light',
+    type: 'dark',
     primary: {
       main: '#5000ff',
     },

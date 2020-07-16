@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
-import {fetchWith, Account, Login, ChangePassword, ChangeName, ChangeEmail } from './fetchWith';
+import { Account, Login, ChangeEmail, ChangeName, ChangePassword } from './api';
+import { signup, login, checkLoggedIn, logout, deleteAccount } from './api';
+import { changeName, changeEmail, changePassword } from './api';
 
-export interface UserType {
-  name: string;
-  email: string;
-}
+export interface UserType { name: string; email: string; };
 
 export interface AppStateContextType {
   loading: boolean;
@@ -22,7 +21,7 @@ export interface AppStateContextType {
   deleteAccount: () => void;
   error: Error | null;
   setError: Dispatch<SetStateAction<Error | null>>;
-}
+};
 
 export const AppStateContext = createContext<AppStateContextType>(null!);
 
@@ -33,11 +32,11 @@ export default function AppStateProvider(props: { children: ReactNode }) {
 
   const handleFetch = async (f: Promise<Response>) => {
     setLoading(true);
-    f.then((r) => r.json())
-      .then((r) => {
+    f.then(r => r.json())
+      .then(r => {
         console.log(r);
         setUser(r.user || null);
-        if (r.errors) setError(r.errors);
+        r.errors && setError(r.errors);
       })
       .catch(setError);
     setLoading(false);
@@ -48,19 +47,19 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading,
     user,
     setUser,
-    signup: (data: Account) => handleFetch(fetchWith('/users', 'POST', data)),
-    login: (data: Login) => handleFetch(fetchWith('/sessions', 'POST', data)),
-    checkLoggedIn: () => handleFetch(fetchWith('/logged_in', 'GET')),
-    logout: () => { fetchWith('/logout', 'DELETE'); setUser(null) },
-    changeName: (data: ChangeName) => handleFetch(fetchWith('/change_name', 'PATCH', data)),
-    changeEmail: (data: ChangeEmail) => handleFetch(fetchWith('/change_email', 'PATCH', data)),
-    changePassword: (data: ChangePassword) => handleFetch(fetchWith('/change_password', 'PATCH', data)),
-    deleteAccount: () => { fetchWith('/delete_account', 'DELETE'); setUser(null) },
+    signup: (data: Account) => handleFetch(signup(data)),
+    login: (data: Login) => handleFetch(login(data)),
+    checkLoggedIn: () => handleFetch(checkLoggedIn()),
+    logout: () => { logout(); setUser(null) },
+    changeName: (data: ChangeName) => handleFetch(changeName(data)),
+    changeEmail: (data: ChangeEmail) => handleFetch(changeEmail(data)),
+    changePassword: (data: ChangePassword) => handleFetch(changePassword(data)),
+    deleteAccount: () => { deleteAccount(); setUser(null) },
     error,
     setError,
   };
 
   return <AppStateContext.Provider value={contextValue}>{props.children}</AppStateContext.Provider>;
-}
+};
 
-export const useAppState = () => useContext(AppStateContext);
+export const useAppState = () => useContext(AppStateContext)
