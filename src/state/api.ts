@@ -17,11 +17,15 @@ export const fetchAPI = (endpoint?: string, method: string = 'GET', data?: Fetch
   })
 );
 
-export const signup = (data: Account) => fetchAPI('/users', 'POST', data);
-export const login = (data: Login) => fetchAPI('/sessions', 'POST', data);
-export const checkLoggedIn = () => fetchAPI('/logged_in', 'GET');
-export const logout = () => fetchAPI('/logout', 'DELETE');
-export const changeName = (data: ChangeName) => fetchAPI('/change_name', 'PATCH', data);
-export const changeEmail = (data: ChangeEmail) => fetchAPI('/change_email', 'PATCH', data);
-export const changePassword = (data: ChangePassword) => fetchAPI('/change_password', 'PATCH', data);
-export const deleteAccount = () => fetchAPI('/delete_account', 'DELETE');
+const api = {
+  signup: (data: Account) => fetchAPI('/users', 'POST', data),
+  login: (data: Login) => fetchAPI('/sessions', 'POST', data),
+  checkLoggedIn: () => fetchAPI('/logged_in', 'GET'),
+  logout: () => fetchAPI('/logout', 'DELETE'),
+  changeName: (data: ChangeName) => fetchAPI('/change_name', 'PATCH', data),
+  changeEmail: (data: ChangeEmail) => fetchAPI('/change_email', 'PATCH', data),
+  changePassword: (data: ChangePassword) => fetchAPI('/change_password', 'PATCH', data),
+  deleteAccount: () => fetchAPI('/delete_account', 'DELETE'),
+};
+
+export default api;

@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
-import { Account, Login, ChangeEmail, ChangeName, ChangePassword } from './api';
-import { signup, login, checkLoggedIn, logout, deleteAccount } from './api';
-import { changeName, changeEmail, changePassword } from './api';
+import api, { Account, Login, ChangeEmail, ChangeName, ChangePassword } from './api';
 
 export interface UserType { name: string; email: string; };
 
@@ -47,14 +45,14 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading,
     user,
     setUser,
-    signup: (data: Account) => handleFetch(signup(data)),
-    login: (data: Login) => handleFetch(login(data)),
-    checkLoggedIn: () => handleFetch(checkLoggedIn()),
-    logout: () => { logout(); setUser(null) },
-    changeName: (data: ChangeName) => handleFetch(changeName(data)),
-    changeEmail: (data: ChangeEmail) => handleFetch(changeEmail(data)),
-    changePassword: (data: ChangePassword) => handleFetch(changePassword(data)),
-    deleteAccount: () => { deleteAccount(); setUser(null) },
+    signup: (data: Account) => handleFetch(api.signup(data)),
+    login: (data: Login) => handleFetch(api.login(data)),
+    checkLoggedIn: () => handleFetch(api.checkLoggedIn()),
+    logout: () => { api.logout(); setUser(null) },
+    changeName: (data: ChangeName) => handleFetch(api.changeName(data)),
+    changeEmail: (data: ChangeEmail) => handleFetch(api.changeEmail(data)),
+    changePassword: (data: ChangePassword) => handleFetch(api.changePassword(data)),
+    deleteAccount: () => { api.deleteAccount(); setUser(null) },
     error,
     setError,
   };
