@@ -82,10 +82,6 @@ export default function Nav() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
   const loggedIn = (
     <>
       <Button className={classes.button} variant="contained" color="primary" onClick={handleLogout}>
@@ -108,14 +104,14 @@ export default function Nav() {
             keepMounted
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             open={open}
-            onClose={handleCloseMenu}
+            onClose={() => setAnchorEl(null)}
           >
-            <MenuItem onClick={handleCloseMenu}>
+            <MenuItem onClick={() => setAnchorEl(null)}>
               <Link to="/account" className={classes.link} >
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleCloseMenu}>
+            <MenuItem onClick={() => setAnchorEl(null)}>
               <Link to="/account/edit" className={classes.link} >
                 Edit Account
               </Link>
