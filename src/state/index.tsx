@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
-import api, { Account, Login, ChangeEmail, ChangeName, ChangePassword } from './api';
+import fetchApi, { Account, Login, ChangeEmail, ChangeName, ChangePassword, FetchBody } from './fetchApi';
 
 export interface UserType { name: string; email: string; };
 
@@ -12,10 +12,10 @@ export interface AppStateContextType {
   signup: (data: Account) => void;
   login: (data: Login) => void;
   checkLoggedIn: () => void;
-  logout: () => void;
   changeEmail: (data: ChangeEmail) => void;
   changeName: (data: ChangeName) => void;
   changePassword: (data: ChangePassword) => void;
+  logout: () => void;
   deleteAccount: () => void;
   error: Error | null;
   setError: Dispatch<SetStateAction<Error | null>>;
@@ -28,16 +28,22 @@ export default function AppStateProvider(props: { children: ReactNode }) {
   const [user, setUser] = useState<UserType | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const handleFetch = async (f: Promise<Response>) => {
-    setLoading(true);
-    f.then(r => r.json())
-      .then(r => {
-        console.log(r);
-        setUser(r.user || null);
-        r.errors && setError(r.errors);
-      })
-      .catch(setError);
-    setLoading(false);
+  const handleFetch = async (endpoint?: string, method: string = 'GET', data?: FetchBody) => {
+    if (data) {
+      setLoading(true);
+      fetchApi(endpoint, method, data)
+        .then(r => r.json())
+        .then(r => {
+          console.log(r);
+          setUser(r.user || null);
+          r.errors && setError(r.errors);
+        })
+        .catch(setError);
+      setLoading(false);
+    } else {
+      fetchApi(endpoint, method);
+      if (endpoint === 'logout' || 'delete_account') setUser(null);
+    };
   };
 
   const contextValue: AppStateContextType = {
@@ -45,14 +51,14 @@ export default function AppStateProvider(props: { children: ReactNode }) {
     setLoading,
     user,
     setUser,
-    signup: (data: Account) => handleFetch(api.signup(data)),
-    login: (data: Login) => handleFetch(api.login(data)),
-    checkLoggedIn: () => handleFetch(api.checkLoggedIn()),
-    logout: () => { api.logout(); setUser(null) },
-    changeName: (data: ChangeName) => handleFetch(api.changeName(data)),
-    changeEmail: (data: ChangeEmail) => handleFetch(api.changeEmail(data)),
-    changePassword: (data: ChangePassword) => handleFetch(api.changePassword(data)),
-    deleteAccount: () => { api.deleteAccount(); setUser(null) },
+    signup: (data: Account) => handleFetch('signup', 'POST', data),
+    login: (data: Login) => handleFetch('login', 'POST', data),
+    checkLoggedIn: () => handleFetch('check_logged_in'),
+    changeName: (data: ChangeName) => handleFetch('change_name', 'PATCH', data),
+    changeEmail: (data: ChangeEmail) => handleFetch('change_email', 'PATCH', data),
+    changePassword: (data: ChangePassword) => handleFetch('change_password', 'PATCH', data),
+    logout: () => { handleFetch('logout', 'DELETE'); setUser(null) },
+    deleteAccount: () => { handleFetch('delete_account', 'DELETE'); setUser(null) },
     error,
     setError,
   };
